@@ -3,14 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- PicoCSS stylesheet -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
     />
+
+    <!-- Custom styles -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
+
+    <!-- Stylesheet for media queries -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='media-queries.css') }}"
+    />
+
     <title>{{ title }}</title>
   </head>
   <body>

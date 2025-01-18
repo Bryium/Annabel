@@ -2,24 +2,14 @@
 <!-- Loading Screen -->
 <div id="loading-screen">
   <div id="loading-slideshow">
-    <!-- Animation for greeting -->
-    <div id="loading-message" class="loading-message">
-      <p>Happy Birthday to Me!</p>
-    </div>
     <!-- Videos -->
     <video autoplay muted loop id="video-player">
       <source
-        src="{{ url_for('static', filename='videos/Video 1.mp4') }}"
+        src="{{ url_for('static', filename='Video 1.mp4') }}"
         type="video/mp4"
       />
       Your browser does not support the video tag.
     </video>
-    <!-- Images -->
-    <img
-      src="{{ url_for('static', filename='images/photo 1.jpg') }}"
-      alt="Loading Image 1"
-      id="loading-image"
-    />
   </div>
 </div>
 
@@ -42,15 +32,6 @@
   <section id="memories">
     <h2>Shared Memories</h2>
     <div class="gallery">
-      <img
-        src="{{ url_for('static', filename='images/photo 1.jpg') }}"
-        alt="Memory 1"
-      />
-      <img
-        src="{{ url_for('static', filename='images/photo 2.jpg') }}"
-        alt="Memory 2"
-      />
-      <!-- Videos -->
       <video controls id="video-1">
         <source
           src="{{ url_for('static', filename='Video 1.mp4') }}"
@@ -127,13 +108,8 @@
       "{{ url_for('static', filename='Video 5.mp4') }}",
       "{{ url_for('static', filename='Video 6.mp4') }}",
     ];
-    const images = [
-      "{{ url_for('static', filename='images/photo 1.jpg') }}",
-      "{{ url_for('static', filename='images/photo 2.jpg') }}",
-    ];
+
     const videoPlayer = document.getElementById("video-player");
-    const loadingImage = document.getElementById("loading-image");
-    const loadingMessage = document.getElementById("loading-message");
 
     // Function to play the video
     function playVideo(videoId) {
@@ -143,36 +119,62 @@
       }
     }
 
-    // Function to start the slideshow after the message animation
-    function startSlideshow() {
+    // Function to start the slideshow of videos
+    function startVideoSlideshow() {
+      // play vidoe in sequance
       const slideshowInterval = setInterval(() => {
         currentIndex = (currentIndex + 1) % videos.length;
         videoPlayer.src = videos[currentIndex];
-        loadingImage.src = images[currentIndex % images.length];
-        playVideo("video-player"); // Play the currently loaded video
-      }, 1000); // Switch every second
+        playVideo("video-player");
+      }, 3000);
 
-      // Hide videos and images after 5 seconds
       setTimeout(() => {
+        // Hide video player
         document.getElementById("video-player").style.display = "none";
-        document.getElementById("loading-image").style.display = "none";
 
-        // Display Happy New Year message
+        // Display "Happy Birthday message"
+        const loadingMessage = document.createElement("div");
         loadingMessage.innerHTML = "Happy Birthday to Me!";
+        loadingMessage.style.textAlign = "center";
+        loadingMessage.style.color = "white";
+        loadingMessage.style.fontSize = "2rem";
+        loadingMessage.style.fontWeight = "bold";
+        loadingMessage.style.position = "absolute";
+        loadingMessage.style.top = "50%";
+        loadingMessage.style.left = "50%";
+        loadingMessage.style.transform = "translate(-50%, -50%)";
+        loadingMessage.style.opacity = "0";
+        loadingMessage.style.animation = "fadeIn 2s ease-in-out forwards";
+
+        // Add the message to the loading screen
+        document.getElementById("loading-screen").appendChild(loadingMessage);
+
+        // CSS for fade-in animation
+        const style = document.createElement("style");
+        style.innerHTML = `
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
+        document.head.appendChild(style);
 
         // Show the main content after another 3 seconds
         setTimeout(() => {
           document.getElementById("loading-screen").style.display = "none";
           document.getElementById("main-content").style.display = "block";
-        }, 3000); // Wait 3 seconds before showing the main content
-      }, 5000); // 5 seconds for videos and images
+        }, 3000);
+      }, 18000);
     }
 
-    // Trigger the animation for the message
+    // Start the video slideshow after a 3-second delay
     setTimeout(() => {
-      loadingMessage.innerHTML = "Happy Birthday to Me!";
-      startSlideshow();
-    }, 3000); // Delay 3 seconds for the greeting message animation
+      startVideoSlideshow();
+    }, 3000);
   };
 </script>
 
