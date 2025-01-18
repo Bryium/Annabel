@@ -1,0 +1,98 @@
+{% extends 'base.html' %} {% block content %}
+<!-- Loading Screen -->
+<div id="loading-screen">
+  <div id="loading-slideshow">
+    <!-- Videos -->
+    <video autoplay muted loop id="video-player">
+      <source
+        src="{{ url_for('static', filename='videos/Video 1.mp4') }}"
+        type="video/mp4"
+      />
+    </video>
+    <!-- Images -->
+    <img
+      src="{{ url_for('static', filename='images/photo 1.jpg') }}"
+      alt="Loading Image 1"
+      id="loading-image"
+    />
+  </div>
+</div>
+
+<!-- Main Content -->
+<div id="main-content" style="display: none">
+  <section id="greeting">
+    <h1>Happy Birthday, Annabel! 🎉</h1>
+    <h3>
+      Today is all about celebrating you and the wonderful memories we've
+      shared!
+    </h3>
+  </section>
+
+  <section id="memories">
+    <h2>Shared Memories</h2>
+    <div class="gallery">
+      <img
+        src="{{ url_for('static', filename='images/photo 1.jpg') }}"
+        alt="Memory 1"
+      />
+      <img
+        src="{{ url_for('static', filename='images/photo 2.jpg') }}"
+        alt="Memory 2"
+      />
+    </div>
+  </section>
+
+  <section id="actions">
+    <h2>Celebrate with Annabel</h2>
+    <div>
+      <!-- WhatsApp Button -->
+      <a
+        href="https://wa.me/?text=Happy%20Birthday%20Annabel!%20Wishing%20you%20a%20fantastic%20day%20filled%20with%20joy%20and%20love!"
+        target="_blank"
+        class="button"
+      >
+        Wish on WhatsApp
+      </a>
+      <!-- M-Pesa Button -->
+      <a href="https://www.safaricom.com/mpesa" target="_blank" class="button">
+        Send a Gift via M-Pesa
+      </a>
+    </div>
+  </section>
+</div>
+
+<!-- JavaScript for Loading Screen -->
+<script>
+  window.onload = function () {
+    let currentIndex = 0;
+    const videos = [
+      "{{ url_for('static', filename='videos/Video 1.mp4') }}",
+      "{{ url_for('static', filename='videos/Video 2.mp4') }}",
+      "{{ url_for('static', filename='videos/Video 3.mp4') }}",
+      "{{ url_for('static', filename='videos/Video 4.mp4') }}",
+      "{{ url_for('static', filename='videos/Video 5.mp4') }}",
+      "{{ url_for('static', filename='videos/Video 6.mp4') }}",
+    ];
+    const images = [
+      "{{ url_for('static', filename='images/photo1.jpg') }}",
+      "{{ url_for('static', filename='images/photo2.jpg') }}",
+    ];
+    const videoPlayer = document.getElementById("video-player");
+    const loadingImage = document.getElementById("loading-image");
+
+    // Cycle through videos and images
+    const slideshowInterval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % videos.length;
+      videoPlayer.src = videos[currentIndex];
+      loadingImage.src = images[currentIndex % images.length];
+    }, 1000); // Switch every second
+
+    // Hide loading screen after 5 seconds
+    setTimeout(() => {
+      clearInterval(slideshowInterval);
+      document.getElementById("loading-screen").style.display = "none";
+      document.getElementById("main-content").style.display = "block";
+    }, 5000); // 5 seconds
+  };
+</script>
+{% endblock %}

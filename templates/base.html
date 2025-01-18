@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <nav class="container-fluid">
+      <ul>
+        <li><strong>Annabel's Birthday</strong></li>
+      </ul>
+      <ul>
+        <li><a href="#greeting">Greeting</a></li>
+        <li><a href="#memories">Memories</a></li>
+        <li><a href="#actions">Actions</a></li>
+      </ul>
+    </nav>
+    <main class="container">{% block content %} {% endblock %}</main>
+    <footer class="container">
+      <small> © {{ title }} • Made with ❤️ for Annabel! </small>
+    </footer>
+  </body>
+</html>
