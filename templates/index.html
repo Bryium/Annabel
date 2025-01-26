@@ -1,10 +1,12 @@
 {% extends 'base.html' %} {% block content %}
 
-<!-- Background Music -->
-<audio autoplay loop volume="0.5">
+<!-- Background Audio -->
+<audio id="audio-player" loop>
   <source src="{{ url_for('static', filename='song.mp3') }}" type="audio/mp3" />
   Your browser does not support the audio tag.
 </audio>
+
+<button id="play-button">Play Audio</button>
 
 <!-- Loading Screen -->
 <div id="loading-screen">
@@ -99,6 +101,23 @@
 <!-- JavaScript for Loading Screen -->
 <script>
   window.onload = function () {
+    document
+      .getElementById("play-button")
+      .addEventListener("click", function () {
+        const audioPlayer = document.getElementById("audio-player");
+        audioPlayer
+          .play()
+          .then(() => {
+            console.log("Audio playback started successfully!");
+          })
+          .catch((error) => {
+            console.error("Audio playback failed:", error);
+            alert(
+              "Audio playback failed. Please try again or check browser settings."
+            );
+          });
+      });
+
     let currentIndex = 0;
     const videos = [
       "{{ url_for('static', filename='Video 1.mp4') }}",
@@ -114,22 +133,22 @@
     // Function to play a video
     function playVideo(videoUrl) {
       videoPlayer.src = videoUrl;
-      videoPlayer.load(); // Ensure the video is loaded before playing
+      videoPlayer.load();
       videoPlayer.play();
     }
 
     // Function to start the video slideshow
     function startVideoSlideshow() {
-      playVideo(videos[currentIndex]); // Play the first video
+      playVideo(videos[currentIndex]);
 
       const slideshowInterval = setInterval(() => {
-        currentIndex = (currentIndex + 1) % videos.length; // Move to the next video
+        currentIndex = (currentIndex + 1) % videos.length;
         playVideo(videos[currentIndex]);
-      }, 3000); // Change video every 3 seconds
+      }, 3000);
 
       // End the slideshow and show the birthday message after 18 seconds
       setTimeout(() => {
-        clearInterval(slideshowInterval); // Stop the interval
+        clearInterval(slideshowInterval);
 
         // Hide the video player
         videoPlayer.style.display = "none";
@@ -170,7 +189,7 @@
           document.getElementById("loading-screen").style.display = "none";
           document.getElementById("main-content").style.display = "block";
         }, 3000);
-      }, 18000); // Total duration: 18 seconds
+      }, 18000);
     }
 
     // Delay the start of the video slideshow by 3 seconds
