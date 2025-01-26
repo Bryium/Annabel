@@ -1,4 +1,11 @@
 {% extends 'base.html' %} {% block content %}
+
+<!-- Background Music -->
+<audio autoplay loop volume="0.5">
+  <source src="{{ url_for('static', filename='song.mp3') }}" type="audio/mp3" />
+  Your browser does not support the audio tag.
+</audio>
+
 <!-- Loading Screen -->
 <div id="loading-screen">
   <div id="loading-slideshow">
@@ -104,28 +111,30 @@
 
     const videoPlayer = document.getElementById("video-player");
 
-    // Function to play the video
-    function playVideo(videoId) {
-      const videoElement = document.getElementById(videoId);
-      if (videoElement) {
-        videoElement.play(); // Play the video
-      }
+    // Function to play a video
+    function playVideo(videoUrl) {
+      videoPlayer.src = videoUrl;
+      videoPlayer.load(); // Ensure the video is loaded before playing
+      videoPlayer.play();
     }
 
-    // Function to start the slideshow of videos
+    // Function to start the video slideshow
     function startVideoSlideshow() {
-      // play vidoe in sequance
+      playVideo(videos[currentIndex]); // Play the first video
+
       const slideshowInterval = setInterval(() => {
-        currentIndex = (currentIndex + 1) % videos.length;
-        videoPlayer.src = videos[currentIndex];
-        playVideo("video-player");
-      }, 3000);
+        currentIndex = (currentIndex + 1) % videos.length; // Move to the next video
+        playVideo(videos[currentIndex]);
+      }, 3000); // Change video every 3 seconds
 
+      // End the slideshow and show the birthday message after 18 seconds
       setTimeout(() => {
-        // Hide video player
-        document.getElementById("video-player").style.display = "none";
+        clearInterval(slideshowInterval); // Stop the interval
 
-        // Display "Happy Birthday message"
+        // Hide the video player
+        videoPlayer.style.display = "none";
+
+        // Create and display the "Happy Birthday" message
         const loadingMessage = document.createElement("div");
         loadingMessage.innerHTML = "Happy Birthday to Me!";
         loadingMessage.style.textAlign = "center";
@@ -139,21 +148,21 @@
         loadingMessage.style.opacity = "0";
         loadingMessage.style.animation = "fadeIn 2s ease-in-out forwards";
 
-        // Add the message to the loading screen
+        // Append the message to the loading screen
         document.getElementById("loading-screen").appendChild(loadingMessage);
 
-        // CSS for fade-in animation
+        // Add CSS for fade-in animation
         const style = document.createElement("style");
         style.innerHTML = `
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-`;
+          @keyframes fadeIn {
+            0% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 1;
+            }
+          }
+        `;
         document.head.appendChild(style);
 
         // Show the main content after another 3 seconds
@@ -161,10 +170,10 @@
           document.getElementById("loading-screen").style.display = "none";
           document.getElementById("main-content").style.display = "block";
         }, 3000);
-      }, 18000);
+      }, 18000); // Total duration: 18 seconds
     }
 
-    // Start the video slideshow after a 3-second delay
+    // Delay the start of the video slideshow by 3 seconds
     setTimeout(() => {
       startVideoSlideshow();
     }, 3000);
